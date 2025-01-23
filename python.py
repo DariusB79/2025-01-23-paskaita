@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 # Elementarus budas
 
@@ -11,26 +12,37 @@ import os
     #file.write("Duomenu irasymui : ")
 
 
-# Gudresnis budas :-) 
 
-create_folder = ["./projects","./projects/data", "./projects/scripts", "./projects/logs" ]
-create_file = ["./projects/README.md"]
 
-for folder in create_folder:
-    if not os.path.exists(folder):
-         os.mkdir(folder)
-    if os.path.exists(folder):
-         print(f"folderis : {folder} egzistuoja")
+folders_to_create = ["./automatizavimas/projects", "./automatizavimas/projects/data", "./automatizavimas/projects/scripts", "./automatizavimas/projects/logs"]
+files_to_create = ["./automatizavimas/projects/README.md"]
+log_file = "./automatizavimas/projects/logs/activity.log"
+
+def info_to_log_file(log_file):
+    with open(log_file, "a+") as file_opened:
+        time_now = datetime.now()
+        file_opened.write(f'buvo sukurtas: {time_now}\n')
+
+directory = os.path.dirname(log_file) # ./automatizavimas/projects/logs sukuriama pirma direktorija projects/logs
+os.makedirs(directory, exist_ok=True)
+info_to_log_file(log_file=log_file)
+
+for folder in folders_to_create:
+    #folder = ./automatizavimas/projects
+    if not os.path.exists(folder): # True kai folderis neegzistuoja       
+        os.makedirs(folder)
+        info_to_log_file(log_file=log_file)
+    if os.path.exists(folder): # True  kai folderis egzistuoja
+        print(f'folder: {folder} exists')
     else:
-         print(f"tokio folderio {folder} nera")
+        print((f'tokio folderio: {folder} nera'))
 
-for file in create_file:
-     with open(file, "w") as open_file:
-          open_file.write("Ivedami nauji duomenys: ")
-
-     if os.path.exists(file):
-          print(f"Sis failas - {file}  jau egzistuoja")
-     else:
-          print(f"Tikio failo - {file} - NERA")
-
-
+for file in files_to_create: 
+    # file = ./automatizavimas/projects/README.md 
+    with open(file, "w") as file_opened:
+        file_opened.write('Mano daroma programa')
+   
+    if os.path.exists(file): # True kai failas egzistuoja
+        print(f'file: {file} exists')
+    else:
+        print((f'file: {file} do not exist'))
